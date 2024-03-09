@@ -1,87 +1,3 @@
-CREATE DATABASE library;
-USE library;
-
-CREATE  TABLE book(
-	id INT PRIMARY KEY,
-	title VARCHAR(255) NOT NULL,
-    author_id INT,
-    genre_id INT,
-	isbn VARCHAR(255),
-    edition INT NOT NULL,
-    years INT NOT NULL,
-    price DOUBLE NOT NULL,
-
-    FOREIGN KEY (author_id) REFERENCES author(id),
-    FOREIGN KEY (genre_id) REFERENCES genre(id)
-);
-
-CREATE  TABLE author(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-    birthday DATE NOT NULL,
-    nationality VARCHAR(255) NOT NULL,
-    biography TEXT
-);
-
-CREATE  TABLE publisher(
-	name VARCHAR(255) NOT NULL,
-    address VARCHAR(255),
-    phone VARCHAR(20),
-    website VARCHAR(255)
-);
-
-CREATE  TABLE genre(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-    description VARCHAR(255)
-);
-
-CREATE  TABLE customer(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL,
-    phone VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    passwords INT NOT NULL
-);
-
-CREATE  TABLE loan(
-	id INT PRIMARY KEY,
-	customer VARCHAR(255),
-	customer_id int,
-    book_id INT,
-    loan_date DATE NOT NULL,
-    due_date DATE NOT NULL,
-    return_date DATE,
-
-    FOREIGN KEY (customer_id) REFERENCES customer(id),
-    FOREIGN KEY (book_id) REFERENCES book(id)
-);
-
-CREATE TABLE book2author (
-	book_id INTEGER,
-    author_id INTEGER,
-    PRIMARY KEY (book_id, author_id),
-    FOREIGN KEY (book_id) REFERENCES book(id),
-    FOREIGN KEY (author_id) REFERENCES author(id)
-);
-
-CREATE TABLE book2genre (
-	book_id INTEGER,
-    genre_id INTEGER,
-    PRIMARY KEY (book_id, genre_id),
-    FOREIGN KEY (book_id) REFERENCES book(id),
-    FOREIGN KEY (genre_id) REFERENCES genre(id)
-);
-
-CREATE TABLE book2loan (
-    book_id INTEGER,
-    loan_id INTEGER,
-    PRIMARY KEY (book_id, loan_id),
-    FOREIGN KEY (book_id) REFERENCES book(id),
-    FOREIGN KEY (loan_id) REFERENCES loan(id)
-);
-
 INSERT INTO book (id, title, author_id, genre_id, isbn, edition, years, price) VALUES
 	(1, "Hallowe'en Party", 1, 1, "978-0-06-334297-2", 1, "2008", 9.19),
     (2, "Six of Crows", 2, 2, "978-1-51010-628-4", 1, 2018, 21.46),
@@ -92,11 +8,8 @@ INSERT INTO book (id, title, author_id, genre_id, isbn, edition, years, price) V
     (7, "Cain's Jawbone", 7, 7, "978-1-80018-079-6", 2, 2021, 17.95),
     (8, "To Kill a Mockingbird", 8, 8, "978-0-061-120084", 2, 1988, 15.99),
     (9, "The Picture of Dorian Gray", 9, 8, "978-0-486-30268-4", 1, 1890, 11.99),
-    (10, "To Kill a Mockingbird", 8, 8, "978-0-061-120085-1", 4, 2022, 22.99);
-
-SELECT title, years, edition FROM book WHERE edition >= 2;
-SELECT count(edition) FROM book WHERE edition >= 2;
-SELECT title, edition FROM book order by edition, title;
+    (10, "To Kill a Mockingbird", 8, 8, "978-0-061-120085-1", 4, 2022, 22.99),
+    (11, "The Guernsey Literary and Potato Peel Pie Society", 10, 4, "978-0-385-34099-1", 1, 2008, 10.76);
 
 INSERT INTO author (name, birthday, nationality, biography) VALUES
     ("Agatha Christie", "1890-09-15", "British", "Agatha Christie was an English writer known for her detective novels. She is best known for her 66 detective novels and 14 short story collections, as well as the world's longest-running play – The Mousetrap."),
@@ -107,7 +20,9 @@ INSERT INTO author (name, birthday, nationality, biography) VALUES
     ("Mary Shelley", "1797-08-30", "British", "Mary Shelley was an English novelist who wrote the Gothic novel Frankenstein; or, The Modern Prometheus. She also edited and promoted the works of her husband, the Romantic poet and philosopher Percy Bysshe Shelley."),
     ("Michelle Birkby", "1989-04-09", "British", "Michelle Birkby is an author known for her novels and short stories. Cain's Jawbone is one of her works, blending mystery and historical fiction."),
     ("Harper Lee", "1926-04-28", "American", "Harper Lee was an American novelist widely known for her Pulitzer Prize-winning novel To Kill a Mockingbird, which deals with the issues of racism that she observed as a child in her hometown of Monroeville, Alabama."),
-    ("Oscar Wilde", "1854-10-16", "Irish", "Oscar Wilde was an Irish poet and playwright known for his wit, aestheticism, and flamboyant style. He is best known for his novel The Picture of Dorian Gray, as well as his plays and epigrams.");
+    ("Oscar Wilde", "1854-10-16", "Irish", "Oscar Wilde was an Irish poet and playwright known for his wit, aestheticism, and flamboyant style. He is best known for his novel The Picture of Dorian Gray, as well as his plays and epigrams."),
+    ('Mary Ann Shaffer', '1934-12-13', 'American', 'Author of The Guernsey Literary and Potato Peel Pie Society.'),
+	('Annie Barrows', '1962-08-24', 'American', 'Co-author of The Guernsey Literary and Potato Peel Pie Society.');
 
 INSERT INTO publisher(name, address, phone, website) VALUES
 	("Harper Collins Publishers", "195 Broadway, New York, NY 10007", "1-800-242-7737", "https://www.harpercollins.com/"),
@@ -116,7 +31,8 @@ INSERT INTO publisher(name, address, phone, website) VALUES
     ("Doubleday", "1745 Broadway, New York City, U.S", "1-212-572-2662", "https://www.doubledaybookclub.com/"),
     ("Dover Publications", "1325 Franklin Ave, Garden City, NY", "01892-888690", "https://store.doverpublications.com/"),
     ("Lackington, Hughes, Harding, Mavor, & Jones", "Finsbury Square", "none", "none"),
-    ("Unbound", "20th St Thomas Street, London, SE1 9RS, United Kingdom", "020-3997-6790", "https://unbound.com/");
+    ("Unbound", "20th St Thomas Street, London, SE1 9RS, United Kingdom", "020-3997-6790", "https://unbound.com/"),
+    ("Dial Press", "1745 Broadway New York, NY 10019", "212-782-9000", "https://www.writerscafe.org/");
 
 INSERT INTO genre (name, description) VALUES
     ("Mystery", "Books that involve solving a crime or puzzle, often with a focus on suspense and investigation."),
@@ -167,7 +83,9 @@ INSERT INTO book2author (book_id, author_id) VALUES
     (7, 7),
     (8, 8),
     (9, 9),
-    (10, 8);
+    (10, 8),
+    (11, 10),
+    (11, 11);
 
 INSERT INTO book2genre (book_id, genre_id) VALUES
 	(1, 1),
@@ -179,10 +97,13 @@ INSERT INTO book2genre (book_id, genre_id) VALUES
     (7, 7),
     (8, 8),
     (9, 8),
+    (10, 8),
     (2, 8),
     (4, 8),
     (5, 8),
-    (6, 8);
+    (6, 8),
+    (11, 4),
+    (11, 8);
 
 INSERT INTO book2loan (book_id, loan_id) VALUES
 	(1, 1),
@@ -204,49 +125,6 @@ INSERT INTO book2loan (book_id, loan_id) VALUES
     (7, 7),
     (8, 1),
     (9, 11),
-    (10, 5);
+    (10, 5),
+    (11, 3);
 
-SELECT customer, book_id, due_date, return_date
-FROM loan
-HAVING return_date > due_date
-ORDER BY customer;
-
-SELECT customer.id, customer.name, book.id, book.title, loan.loan_date, loan.due_date, loan.return_date
-FROM loan
-JOIN customer ON loan.customer_id = customer.id
-JOIN book ON loan.book_id = book.id
-JOIN author ON book.author_id = author.id;
-
-SELECT author.id, author.name
-FROM author
-JOIN book ON author.id = book.author_id
-JOIN loan ON book.id = loan.book_id
-WHERE loan.return_date IS NULL
-ORDER BY author.id;
-
-SELECT customer.id, customer.name, book.id AS book_id, book.title AS book_title, loan.loan_date, loan.due_date, loan.return_date
-FROM loan
-JOIN customer ON loan.customer_id = customer.id
-JOIN book2loan ON loan.book_id = book2loan.book_id
-JOIN book ON book2loan.book_id = book.id
-WHERE loan.return_date > loan.due_date;
-
-
-
-
-
-SELECT author.id AS author_id, author.name AS author_name, book.title AS book_title
-FROM author
-JOIN book2author ON author.id = book2author.author_id
-JOIN book ON book2author.book_id = book.id
-JOIN book2loan ON book.id = book2loan.book_id
-JOIN loan ON book2loan.loan_id = loan.id
-WHERE loan.return_date IS NULL
-GROUP BY author.id, book.id;
-
-SELECT book.title AS Book_Title, GROUP_CONCAT(genre.name SEPARATOR ", ") AS Genres
-FROM book2genre
-JOIN book ON book2genre.book_id = book.id
-JOIN genre ON book2genre.genre_id = genre.id
-GROUP BY book.title
-HAVING COUNT(book2genre.genre_id) > 1;
