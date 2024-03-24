@@ -16,7 +16,7 @@ CREATE  TABLE book(
 );
 
 CREATE  TABLE author(
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	id INT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
     birthday DATE NOT NULL,
     nationality VARCHAR(255) NOT NULL,
@@ -31,7 +31,7 @@ CREATE  TABLE publisher(
 );
 
 CREATE  TABLE genre(
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	id INT PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
     description VARCHAR(255)
 );
