@@ -227,3 +227,20 @@ WHERE NOT EXISTS (
     WHERE customer.id = loan.customer_id
     AND loan.loan_date < '2023-01-30');
 
+
+
+SELECT name FROM author
+UNION
+SELECT title FROM book;
+
+SELECT name FROM author WHERE nationality = "British"
+UNION ALL
+SELECT title FROM book WHERE edition = 1;
+
+SELECT name FROM customer WHERE phone LIKE '555%'
+INTERSECT
+SELECT name FROM customer WHERE email LIKE '%@gmail.com';
+
+(SELECT name FROM customer)
+EXCEPT
+(SELECT name FROM customer WHERE email LIKE '%@gmail.com');
